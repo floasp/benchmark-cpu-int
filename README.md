@@ -56,7 +56,8 @@ build quality and cooling so they should be taken with a grain of salt.
 | Raspberry Pi 4B @2GHz    | 348.067s       | 87.184s           | 4     | 4       | Ubuntu Server 18.04 |
 | Raspberry Pi 4B @1.8GHz  | 397.975s       | 99.625s           | 4     | 4       | Ubuntu Server 18.04 |
 | Intel Core i5-8265U  | 312.243s           | 114.838s          | 4     | 8       | Win 10 |
-| Raspberry Pi 4B @2GHz    | 464.420s       | 116.225s          | 4     | 4       | Ubuntu Server 18.04 |
+| Raspberry Pi 4B @1.5GHz    | 464.420s     | 116.225s          | 4     | 4       | Ubuntu Server 18.04 |
+| Intel Core i5-6300U  | 274.646s           | 116.248s          | 2     | 4       | Win 10 |
 | Intel Core i5-3210M  | 321.585s           | 183.960s          | 2     | 4       | Ubuntu 22.04 |
 | Intel Celeron N2940  | 777.989s           | 199.483s          | 2     | 4       | Win 10 |
 | Intel M-5Y10         | 1041.906s          | 463.959s          | 2     | 4       | Win 8.1 |
@@ -69,6 +70,10 @@ The i5-8265U is probably slow in multi-core because it has a power limit and no 
 | -------------------- | ----------------- | ----- | ------- | ------ |
 | AMD Ryzen 7 4800H    | 9.657s            | 8     | 16      | Win 11 |
 | AMD Ryzen 7 3700X    | 10.057s           | 8     | 16      | Win 10 |
-| Intel Core i5-3210M  | 178.840           | 2     | 4       | Ubuntu 22.04 |
+| Raspberry Pi 4B @2GHz  | 87.130s         | 4     | 4       | Ubuntu Server 18.04 |
+| Raspberry Pi 4B @1.8GHz  | 96.810s       | 4     | 4       | Ubuntu Server 18.04 |
+| Intel Core i5-6300U      | 116.180s      | 2     | 4       | Win 10 |
+| Raspberry Pi 4B @1.5GHz  | 116.184s      | 4     | 4       | Ubuntu Server 18.04 |
+| Intel Core i5-3210M  | 178.840s          | 2     | 4       | Ubuntu 22.04 |
 
 
