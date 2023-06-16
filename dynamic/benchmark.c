@@ -2,10 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int setup_mutex(pthread_mutex_t* mutex){
-    *mutex = PTHREAD_MUTEX_INITIALIZER;
-}
-
 int get_next_start_nr_asynch(int* next, pthread_mutex_t* mutex_next_nr){
     int n = 0;
     pthread_mutex_lock(mutex_next_nr);

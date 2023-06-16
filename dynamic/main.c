@@ -18,7 +18,6 @@ pthread_mutex_t mutex_next_nr;
 int main(){
     printf("Starting Benchmark!\n");
 
-    //setup_mutex(&mutex_next_nr);
     mutex_next_nr = PTHREAD_MUTEX_INITIALIZER;
     timings_t timing_values;
     int cores = getNumberOfCores();

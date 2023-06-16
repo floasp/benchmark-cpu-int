@@ -22,7 +22,6 @@ typedef struct timings_struct{
     double time_;
 } timings_t;
 
-int setup_mutex(pthread_mutex_t* mutex);
 int get_next_start_nr_asynch(int* next, pthread_mutex_t* mutex);
 void *calculateBatch(void *vargp);
 double calculate(int n, int cores, timings_t* timing_values, pthread_mutex_t* mutex_next_nr);
