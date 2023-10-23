@@ -30,6 +30,8 @@ requests the next batch of numbers to calculate. Which takes a little longer tha
 and is faster on the i5-3210M with Ubuntu.
 As mentioned earlier, it should work much better on heterogenous architectures. (test needed, haven't got such a system yet)
 
+The **dynamic version** will be a fully configurable command line benchmark where each parameter can be configured over command line arguments.
+
 # Compilation example with GCC
 Compilation works the same for standard and asymmetric version:
 
