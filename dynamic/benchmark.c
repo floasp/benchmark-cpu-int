@@ -58,9 +58,17 @@ void *calculateBatch(void *vargp){
     return NULL;
 }
 
-double calculate(int n, int cores, timings_t* timing_values, pthread_mutex_t* mutex_next_nr){
-
-    int next_a = 3;
+double calculate(int* start_n, int* end_n, int cores, timings_t* timing_values, pthread_mutex_t* mutex_next_nr){
+    int next_a = *start_n;
+    if (next_a < 3){
+        next_a = 3;  // lower than 3 doesn't make sense
+        *start_n = 3;
+        printf("Starting value too low (has to be bigger than or equal to 3). Start value set to: %d.\n", *start_n);
+    }
+    if (*end_n <= next_a){
+        *end_n = next_a + 1;  // end can't be lower than start
+        printf("End value too low (has to be bigger than or equal to start value +1). End value set to: %d.\n", *end_n);
+    }
     batchsetup_t *batch_nrs = (batchsetup_t *)malloc(sizeof(batchsetup_t) * cores);
 
     if (!batch_nrs){
@@ -70,12 +78,13 @@ double calculate(int n, int cores, timings_t* timing_values, pthread_mutex_t* mu
 
     for(int i = 0; i < cores; i++){
         batch_nrs[i].batch_id = i;
-        batch_nrs[i].n_max = n;
+        batch_nrs[i].n_max = *end_n;
         batch_nrs[i].next = &next_a;
         batch_nrs[i].mutex_next_nr = mutex_next_nr;
     }
-    printf("Start with n=%d.\n", n);
-    
+    //printf("Start with n=%d.\n", end_n);
+    printf("Start with (%d -> %d)\n", *start_n, *end_n);
+
     gettimeofday(&(timing_values->start), NULL);
     timing_values->c_begin = clock();
 
@@ -100,10 +109,14 @@ double calculate(int n, int cores, timings_t* timing_values, pthread_mutex_t* mu
     long seconds = (timing_values->end.tv_sec - timing_values->start.tv_sec);
     long micros = (timing_values->end.tv_usec) - (timing_values->start.tv_usec);
     timing_values->time_ = seconds + (double)micros / 1000000;
-    printf("Finished n=%d.\n", n);
+    printf("Finished (%d -> %d).\n", *start_n, *end_n);
     printf("Runtime on CPU: %lfs (divide by N on Linux)\n", timing_values->time);
     printf("Wall Clock Time: %lfs\n", timing_values->time_);
     printf("\n");
 
     return timing_values->time_;
+}
+
+void benchmark(){
+
 }

@@ -26,18 +26,15 @@ int main(){
     int n_tests = 7;
     //int test_n[7] = {1280, 2560, 5120, 10240, 20480, 40960, 81920};
     //int test_n[7] = {1000, 2000, 5000, 10000, 20000, 50000, 100000};
-    int test_n[7] = {1000, 2000, 2000, 2000, 2000, 2000, 5000};
-    double sc_results[7] = {0};
-    double mc_results[7] = {0};
-
-    calculate(100, 1, &timing_values, &mutex_next_nr);
-    calculate(100, 16, &timing_values, &mutex_next_nr);
+    int test_n_start[7] = {0, 0, 0, 0, 3, 2001, 2000};  // starting point for each benchmark run
+    int test_n_end[7] = {1000, 2000, 2000, 2000, 2000, 2000, 5000};  // end point for each benchmark run
+    double results[7] = {0};
 
     printf("Starting Calculations...\n");
 
     for(int i = 0; i < n_tests; i++){
-        mc_results[i] = calculate(test_n[i], cores, &timing_values, &mutex_next_nr);
-        if(mc_results[i] > 200){
+        results[i] = calculate(&test_n_start[i], &test_n_end[i], cores, &timing_values, &mutex_next_nr);
+        if(results[i] > 200){
             break;
         }
         printf("Cooldown...\n");
@@ -51,18 +48,18 @@ int main(){
         fprintf(file, "cores=%d \n", cores);
     }
 
-    printf("Multicore:\n");
+    printf("Results:\n");
     if(file){
-        fprintf(file, "Multicore results:\n");
+        fprintf(file, "Results:\n");
     }
 
     for(int i = 0; i < n_tests; i++){
-        if(!mc_results[i]){
+        if(!results[i]){
             break;
         }
-        printf("n=%d: %lf\n", test_n[i], mc_results[i]);
+        printf("(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results[i]);
         if(file){
-            fprintf(file, "n=%d: %lf\n", test_n[i], mc_results[i]);
+            fprintf(file, "(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results[i]);
         }
     }
 
