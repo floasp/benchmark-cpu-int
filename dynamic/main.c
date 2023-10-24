@@ -15,7 +15,7 @@
 
 pthread_mutex_t mutex_next_nr;
 
-int main(){
+int main(int argc, char *argv[]){
     printf("Starting Benchmark!\n");
 
     mutex_next_nr = PTHREAD_MUTEX_INITIALIZER;
@@ -28,18 +28,25 @@ int main(){
     //int test_n[7] = {1000, 2000, 5000, 10000, 20000, 50000, 100000};
     int test_n_start[7] = {0, 0, 0, 0, 3, 2001, 2000};  // starting point for each benchmark run
     int test_n_end[7] = {1000, 2000, 2000, 2000, 2000, 2000, 5000};  // end point for each benchmark run
-    double results[7] = {0};
 
     printf("Starting Calculations...\n");
 
-    for(int i = 0; i < n_tests; i++){
-        results[i] = calculate(&test_n_start[i], &test_n_end[i], cores, &timing_values, &mutex_next_nr);
-        if(results[i] > 200){
-            break;
-        }
-        printf("Cooldown...\n");
+    benchmark_results_t results;
+    benchmark_setup_t setup;
+    setup.n_tests = n_tests;
+    setup.test_n_start = test_n_start;
+    setup.test_n_end = test_n_end;
+    setup.cores = cores;
+    setup.max_prev_time = 200;  // next run will only be started when previous run was less than this in seconds
+    setup.cooldown_s = 1; // cooldown between successive runs in seconds
+    setup.timing_values = &timing_values;
+    setup.mutex_next_nr = &mutex_next_nr;
 
-        my_sleep(1);
+    int error = benchmark_run(&results, &setup);
+    
+    if(error){
+        printf("Error during benchmark...");
+        return 0;
     }
 
     FILE *file;
@@ -54,12 +61,12 @@ int main(){
     }
 
     for(int i = 0; i < n_tests; i++){
-        if(!results[i]){
+        if(!results.results[i]){
             break;
         }
-        printf("(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results[i]);
+        printf("(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results.results[i]);
         if(file){
-            fprintf(file, "(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results[i]);
+            fprintf(file, "(%d -> %d): %lf\n", test_n_start[i], test_n_end[i], results.results[i]);
         }
     }
 

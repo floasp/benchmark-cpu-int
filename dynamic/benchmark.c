@@ -1,6 +1,7 @@
 #include "benchmark.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "utility.h"
 
 int get_next_start_nr_asynch(int* next, pthread_mutex_t* mutex_next_nr){
     int n = 0;
@@ -117,6 +118,26 @@ double calculate(int* start_n, int* end_n, int cores, timings_t* timing_values, 
     return timing_values->time_;
 }
 
-void benchmark(){
+int benchmark_run(benchmark_results_t* results, benchmark_setup_t* setup){
 
+    results->n_benchmarks = setup->n_tests;
+    results->start_ns = setup->test_n_start;
+    results->end_ns = setup->test_n_end;
+    results->results = malloc(sizeof(double)*(setup->n_tests));
+
+    if(!results->results){
+        return 1;
+    }
+
+    for(int i = 0; i < setup->n_tests; i++){
+        results->results[i] = calculate(&(setup->test_n_start[i]), &(setup->test_n_end[i]), setup->cores, setup->timing_values, setup->mutex_next_nr);
+        if(results->results[i] > setup->max_prev_time){
+            break;
+        }
+        printf("Cooldown for %d second(s)...\n", setup->cooldown_s);
+
+        my_sleep(setup->cooldown_s);
+    }
+
+    return 0;
 }
